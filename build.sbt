@@ -31,3 +31,5 @@ SbtScalariform.scalariformSettings
 
 ScalariformKeys.preferences := ScalariformKeys.preferences.value
   .setPreference(DoubleIndentClassDeclaration, true)
+
+bintrayOmitLicense := true
