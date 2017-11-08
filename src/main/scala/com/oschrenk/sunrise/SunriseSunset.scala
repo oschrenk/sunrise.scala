@@ -70,9 +70,8 @@ object SunriseSunset {
     val jTransit = J2000 + 0.5 + nStar + simplifiedEquationOfTime
 
     val sunDeclination = sin(toRadians(eclipticalLongitude.toDouble)) * sin(toRadians(EarthObliquity.toDouble))
-    val observerCorrection = sinOfAltitudeSolarDisc
     val hourAngle = Math.acos(
-      (observerCorrection - sin(latitude.toRadians) * sin(sunDeclination)) /
+      (sinOfAltitudeSolarDisc - sin(latitude.toRadians) * sin(sunDeclination)) /
         (cos(latitude.toRadians) * cos(sunDeclination))
     ).toDegrees / 360
 
