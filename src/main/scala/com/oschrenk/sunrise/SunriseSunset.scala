@@ -25,7 +25,10 @@ object SunriseSunset {
     val fraction = julianDay - days
     val day = LocalDate.from(JulianDayFormatter.parse(days.toString))
     val time = LocalTime.ofSecondOfDay((SecondsInDay * fraction).toLong)
-    day.atTime(time).atZone(zoneId)
+    val unzonedTime = day.atTime(time)
+    val offset = zoneId.getRules.getOffset(unzonedTime)
+    println(offset.getTotalSeconds)
+    unzonedTime.atZone(zoneId).plusSeconds(offset.getTotalSeconds)
   }
 
   def of(latitude: Double, longitude: Double, date: LocalDate, zoneId: ZoneId = ZoneId.systemDefault()): (ZonedDateTime, ZonedDateTime) = {
