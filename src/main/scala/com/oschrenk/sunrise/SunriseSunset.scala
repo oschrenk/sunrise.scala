@@ -47,7 +47,6 @@ object SunriseSunset {
     val time = LocalTime.ofSecondOfDay((SecondsInDay * fraction).toLong)
     val unzonedTime = day.atTime(time)
     val offset = zoneId.getRules.getOffset(unzonedTime)
-    println(offset.getTotalSeconds)
     unzonedTime.atZone(zoneId).plusSeconds(offset.getTotalSeconds)
   }
 
