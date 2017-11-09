@@ -23,7 +23,7 @@ val zoneId: ZoneId = ZoneId.of("Europe/Amsterdam")
 val date: LocalDate = LocalDate.of(2017, 5, 22)
 
 val (sunrise, sunset) = SunriseSunset.of(latitude, longitude, date, zoneId)
-println(sunrise) // 2017-05-22T03:39:09+02:00[Europe/Amsterdam]
-println(sunset) // 2017-05-22T19:37:34+02:00[Europe/Amsterdam]
+println(sunrise) // 2017-05-22T05:39:09+02:00[Europe/Amsterdam]
+println(sunset) // 2017-05-22T21:37:34+02:00[Europe/Amsterdam]
 ```
 
