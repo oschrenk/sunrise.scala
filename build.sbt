@@ -1,7 +1,3 @@
-import scalariform.formatter.preferences._
-import com.typesafe.sbt.SbtScalariform
-import com.typesafe.sbt.SbtScalariform.ScalariformKeys
-
 name := "sunrise.scala"
 
 organization := "com.oschrenk"
@@ -26,10 +22,5 @@ scalacOptions ++= Seq(
     "-Xfuture")
 
 initialCommands := "import com.oschrenk.sunrise._"
-
-SbtScalariform.scalariformSettings
-
-ScalariformKeys.preferences := ScalariformKeys.preferences.value
-  .setPreference(DoubleIndentClassDeclaration, true)
 
 bintrayOmitLicense := true
