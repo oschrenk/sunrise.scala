@@ -8,7 +8,7 @@ Calculating the sunrise and sunset in Scala following the [Sunrise equation](htt
 
 ```
 resolvers += Resolver.bintrayRepo("oschrenk", "maven")
-libraryDependencies += "com.oschrenk" %% "sunrise-scala" % "0.1.0"
+libraryDependencies += "com.oschrenk" %% "sunrise-scala" % "0.2.0"
 ```
 
 **Your application**
@@ -27,3 +27,9 @@ println(sunrise) // 2017-05-22T05:39:09+02:00[Europe/Amsterdam]
 println(sunset)  // 2017-05-22T21:37:34+02:00[Europe/Amsterdam]
 ```
 
+## Publish
+
+```
+# publish cross-compiled versions
+sbt +publish
+```
