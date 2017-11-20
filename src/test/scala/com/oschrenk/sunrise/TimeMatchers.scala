@@ -14,8 +14,8 @@ trait TimeMatchers {
       val rightBound = right.plus(duration)
       MatchResult(
         left.isAfter(leftBound) && left.isBefore(rightBound),
-        s"""LocalTime $left is within $leftBound and $rightBound"""",
         s"""LocalTime $left is out of $leftBound and $rightBound"""",
+        s"""LocalTime $left is within $leftBound and $rightBound"""",
       )
     }
   }
