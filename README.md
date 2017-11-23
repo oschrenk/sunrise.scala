@@ -5,7 +5,7 @@ Calculating the sunrise and sunset in Scala following the [Sunrise equation](htt
 *Edge cases*
 Since places within the polar circles might experience [Midnight Sun](https://en.wikipedia.org/wiki/Midnight_sun) or
  [Polar Night](https://en.wikipedia.org/wiki/Polar_night), sunrise or sunset are actually optional for certain places.
- 
+
 That is why the library returns an option, as seen in the example below.
 
 ## Usage
@@ -29,15 +29,17 @@ val zoneId: ZoneId = ZoneId.of("Europe/Amsterdam")
 val date: LocalDate = LocalDate.of(2017, 5, 22)
 
 SunriseSunset.of(latitude, longitude, date, zoneId) match {
-  case (Some(sunrise), Some(sunset)) =>
+  case Right((sunrise,sunset)) =>
     println(sunrise) // 2017-05-22T05:39:09+02:00[Europe/Amsterdam]
     println(sunset)  // 2017-05-22T21:37:34+02:00[Europe/Amsterdam]
-  case (Some(sunrise), None) =>
-    println("Midnight sun")
-  case (None, Some(sunset)) =>
+  case Left(PolarDay(_)) =>
+    println("Polar day")
+  case Left(PolarNight(_)) =>
     println("Polar night")
-}
 ```
+
+Either[Polar, (sunrise, sunset)]
+
 
 ## Publish
 

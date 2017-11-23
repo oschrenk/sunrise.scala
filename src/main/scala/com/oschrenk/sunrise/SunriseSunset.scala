@@ -40,7 +40,7 @@ object SunriseSunset {
   private val observerCorrection = BigDecimal("-2.076") * Math.sqrt(elevationInMeter) / 60
   private val sinOfAltitudeSolarDisc = sin(toRadians((altitudeSolarDiscInDegrees + observerCorrection).toDouble))
 
-  private def normal(julianDay: BigDecimal, zoneId: ZoneId): Option[ZonedDateTime] = {
+  private def normal(julianDay: BigDecimal, zoneId: ZoneId): ZonedDateTime = {
     val days = Math.floor(julianDay.toDouble).toInt
     val day = LocalDate.from(JulianDayFormatter.parse(days.toString))
 
@@ -49,29 +49,21 @@ object SunriseSunset {
     toZoneDateTime(day, time, zoneId)
   }
 
-  private def midnightSun(julianDay: BigDecimal, zoneId: ZoneId): Option[ZonedDateTime] = {
+  private def toLocalDate(julianDay: BigDecimal): LocalDate = {
     val days = Math.floor(julianDay.toDouble).toInt
-    val day = LocalDate.from(JulianDayFormatter.parse(days.toString))
-
-    val time = LocalTime.MIN
-    toZoneDateTime(day, time, zoneId)
-  }
-  private def polarNight(julianDay: BigDecimal, zoneId: ZoneId): Option[ZonedDateTime] = {
-    val days = Math.floor(julianDay.toDouble).toInt
-    val day = LocalDate.from(JulianDayFormatter.parse(days.toString))
-
-    val time = LocalTime.MAX
-    toZoneDateTime(day, time, zoneId)
+    LocalDate.from(JulianDayFormatter.parse(days.toString))
   }
 
-  private def toZoneDateTime(day: LocalDate, time: LocalTime, zoneId: ZoneId): Option[ZonedDateTime] = {
+  private def toZoneDateTime(day: LocalDate, time: LocalTime, zoneId: ZoneId): ZonedDateTime = {
     val unzonedTime = day.atTime(time)
     val offset = zoneId.getRules.getOffset(unzonedTime)
-    Some(unzonedTime.atZone(zoneId).plusSeconds(offset.getTotalSeconds))
+    unzonedTime.atZone(zoneId).plusSeconds(offset.getTotalSeconds)
   }
 
-
-  def of(latitude: Double, longitude: Double, date: LocalDate, zoneId: ZoneId = ZoneId.systemDefault()): (Option[ZonedDateTime], Option[ZonedDateTime]) = {
+  def of(latitude: Double,
+         longitude: Double,
+         date: LocalDate,
+         zoneId: ZoneId = ZoneId.systemDefault()): Either[Polar,(ZonedDateTime, ZonedDateTime)] = {
     val nStar = date.getLong(JulianFields.JULIAN_DAY) - J2000 + Drift - longitude / 360
 
     val meanAnomaly = (m0 + m1 * nStar) % 360
@@ -94,16 +86,16 @@ object SunriseSunset {
     val operand = (sinOfAltitudeSolarDisc - sin(latitude.toRadians) * sin(sunDeclination)) /
         (cos(latitude.toRadians) * cos(sunDeclination))
     if (operand < -1)
-      (midnightSun(jTransit, zoneId), None)
+      Left(PolarDay(toLocalDate(jTransit)))
     else if (operand > 1)
-      (None, polarNight(jTransit, zoneId))
+      Left(PolarNight(toLocalDate(jTransit)))
     else {
       val hourAngle = Math.acos(operand).toDegrees / 360
 
       val sunrise = jTransit - hourAngle
       val sunset = jTransit + hourAngle
 
-      (normal(sunrise, zoneId), normal(sunset, zoneId))
+      Right(Tuple2(normal(sunrise, zoneId), normal(sunset, zoneId)))
     }
   }
 }
