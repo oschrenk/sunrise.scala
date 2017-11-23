@@ -14,7 +14,7 @@ That is why the library returns an option, as seen in the example below.
 
 ```
 resolvers += Resolver.bintrayRepo("oschrenk", "maven")
-libraryDependencies += "com.oschrenk.spacetime" %% "sunrise-scala" % "0.2.0"
+libraryDependencies += "com.oschrenk.spacetime" %% "sunrise-scala" % "0.3.0"
 ```
 
 **Your application**
