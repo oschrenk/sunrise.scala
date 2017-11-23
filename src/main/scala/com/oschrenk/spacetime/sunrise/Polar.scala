@@ -1,4 +1,4 @@
-package com.oschrenk.sunrise
+package com.oschrenk.spacetime.sunrise
 
 import java.time.LocalDate
 

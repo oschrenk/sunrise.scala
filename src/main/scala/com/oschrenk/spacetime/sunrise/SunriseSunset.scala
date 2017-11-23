@@ -1,10 +1,10 @@
-package com.oschrenk.sunrise
+package com.oschrenk.spacetime.sunrise
 
 import java.time._
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.JulianFields
 
-import scala.math.{ cos, sin, toRadians }
+import scala.math.{cos, sin, toRadians}
 
 object SunriseSunset {
   private val J2000 = LocalDate.of(2000, 1, 1).getLong(JulianFields.JULIAN_DAY)
@@ -96,6 +96,24 @@ object SunriseSunset {
       val sunset = jTransit + hourAngle
 
       Right(Tuple2(normal(sunrise, zoneId), normal(sunset, zoneId)))
+    }
+  }
+
+  def main(args: Array[String]): Unit = {
+    // Amsterdam
+    val latitude = 52.366667
+    val longitude = 4.9
+    val zoneId: ZoneId = ZoneId.of("Europe/Amsterdam")
+    val date: LocalDate = LocalDate.of(2017, 5, 22)
+
+    SunriseSunset.of(latitude, longitude, date, zoneId) match {
+      case Right((sunrise,sunset)) =>
+        println(sunrise) // 2017-05-22T05:39:09+02:00[Europe/Amsterdam]
+        println(sunset)  // 2017-05-22T21:37:34+02:00[Europe/Amsterdam]
+      case Left(PolarDay(_)) =>
+        println("Polar day")
+      case Left(PolarNight(_)) =>
+        println("Polar night")
     }
   }
 }

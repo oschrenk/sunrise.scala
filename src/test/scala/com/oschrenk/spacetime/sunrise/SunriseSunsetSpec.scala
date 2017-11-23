@@ -1,5 +1,6 @@
-package com.oschrenk.sunrise
-import java.time.{ Duration, LocalDate, LocalTime, ZoneId }
+package com.oschrenk.spacetime.sunrise
+
+import java.time.{Duration, LocalDate, LocalTime, ZoneId}
 
 import org.scalatest._
 import TimeMatchers._

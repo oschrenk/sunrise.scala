@@ -1,6 +1,6 @@
 name := "sunrise.scala"
 
-organization := "com.oschrenk"
+organization := "com.oschrenk.spacetime"
 
 version := "0.3.0-SNAPSHOT"
 
