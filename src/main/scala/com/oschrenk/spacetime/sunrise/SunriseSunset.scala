@@ -6,6 +6,12 @@ import java.time.temporal.JulianFields
 
 import scala.math.{cos, sin, toRadians}
 
+sealed trait SunriseSunset
+case class PolarDay(on: LocalDate) extends SunriseSunset
+case class PolarNight(on: LocalDate) extends SunriseSunset
+case class Day(sunrise: ZonedDateTime, sunset: ZonedDateTime)
+  extends SunriseSunset
+
 object SunriseSunset {
   private val J2000 = LocalDate.of(2000, 1, 1).getLong(JulianFields.JULIAN_DAY)
   // correct for leap seconds and terrestrial time
@@ -63,7 +69,7 @@ object SunriseSunset {
   def of(latitude: Double,
          longitude: Double,
          date: LocalDate,
-         zoneId: ZoneId = ZoneId.systemDefault()): Either[Polar,(ZonedDateTime, ZonedDateTime)] = {
+         zoneId: ZoneId = ZoneId.systemDefault()): SunriseSunset = {
     val nStar = date.getLong(JulianFields.JULIAN_DAY) - J2000 + Drift - longitude / 360
 
     val meanAnomaly = (m0 + m1 * nStar) % 360
@@ -86,16 +92,16 @@ object SunriseSunset {
     val operand = (sinOfAltitudeSolarDisc - sin(latitude.toRadians) * sin(sunDeclination)) /
         (cos(latitude.toRadians) * cos(sunDeclination))
     if (operand < -1)
-      Left(PolarDay(toLocalDate(jTransit)))
+      PolarDay(toLocalDate(jTransit))
     else if (operand > 1)
-      Left(PolarNight(toLocalDate(jTransit)))
+      PolarNight(toLocalDate(jTransit))
     else {
       val hourAngle = Math.acos(operand).toDegrees / 360
 
       val sunrise = jTransit - hourAngle
       val sunset = jTransit + hourAngle
 
-      Right(Tuple2(normal(sunrise, zoneId), normal(sunset, zoneId)))
+      Day(normal(sunrise, zoneId), normal(sunset, zoneId))
     }
   }
 
@@ -107,12 +113,12 @@ object SunriseSunset {
     val date: LocalDate = LocalDate.of(2017, 5, 22)
 
     SunriseSunset.of(latitude, longitude, date, zoneId) match {
-      case Right((sunrise,sunset)) =>
+      case Day(sunrise,sunset) =>
         println(sunrise) // 2017-05-22T05:39:09+02:00[Europe/Amsterdam]
         println(sunset)  // 2017-05-22T21:37:34+02:00[Europe/Amsterdam]
-      case Left(PolarDay(_)) =>
+      case PolarDay(_) =>
         println("Polar day")
-      case Left(PolarNight(_)) =>
+      case PolarNight(_) =>
         println("Polar night")
     }
   }

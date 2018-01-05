@@ -15,12 +15,12 @@ class SunriseSunsetSpec extends FlatSpec with Matchers {
   val oneMicroSecond: Duration = Duration.ofNanos(1000)
 
   "A sunrise" should "happen early in Amsterdam" in {
-    val (sunrise, _) = SunriseSunset.of(latitude, longitude, date, zoneId).right.get
+    val Day(sunrise, _) = SunriseSunset.of(latitude, longitude, date, zoneId)
     sunrise.toLocalTime should beCloseTo(LocalTime.of(5, 39), oneMinuteTolerance)
   }
 
   it should "happen early in Amsterdam even in winter" in {
-    val (sunrise, _) = SunriseSunset.of(latitude, longitude, winterDate, zoneId).right.get
+    val Day(sunrise, _) = SunriseSunset.of(latitude, longitude, winterDate, zoneId)
     sunrise.toLocalTime should beCloseTo(LocalTime.of(7, 48), oneMinuteTolerance)
   }
 
@@ -29,7 +29,7 @@ class SunriseSunsetSpec extends FlatSpec with Matchers {
     val lon = 102.4833
     val date = LocalDate.of(2017, 5, 22)
     val zoneId = ZoneId.of("Asia/Krasnoyarsk")
-    val polar = SunriseSunset.of(lat, lon, date, zoneId).left.get
+    val polar = SunriseSunset.of(lat, lon, date, zoneId)
     polar shouldBe PolarDay(date)
   }
 
@@ -38,12 +38,12 @@ class SunriseSunsetSpec extends FlatSpec with Matchers {
     val lon = 102.4833
     val date = LocalDate.of(2017, 11, 22)
     val zoneId = ZoneId.of("Asia/Krasnoyarsk")
-    val polar = SunriseSunset.of(lat, lon, date, zoneId).left.get
+    val polar = SunriseSunset.of(lat, lon, date, zoneId)
     polar shouldBe PolarNight(date)
   }
 
   "A sunset" should "happen late in Amsterdam" in {
-    val (_, sunset) = SunriseSunset.of(latitude, longitude, date, zoneId).right.get
+    val Day(_, sunset) = SunriseSunset.of(latitude, longitude, date, zoneId)
     sunset.toLocalTime should beCloseTo(LocalTime.of(21, 37), oneMinuteTolerance)
   }
 }
