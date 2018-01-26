@@ -7,8 +7,8 @@ import java.time.temporal.JulianFields
 import scala.math.{cos, sin, toRadians}
 
 sealed trait SunriseSunset
-case class PolarDay(on: LocalDate) extends SunriseSunset
-case class PolarNight(on: LocalDate) extends SunriseSunset
+case object PolarDay extends SunriseSunset
+case object PolarNight extends SunriseSunset
 case class Day(sunrise: ZonedDateTime, sunset: ZonedDateTime)
   extends SunriseSunset
 
@@ -92,9 +92,9 @@ object SunriseSunset {
     val operand = (sinOfAltitudeSolarDisc - sin(latitude.toRadians) * sin(sunDeclination)) /
         (cos(latitude.toRadians) * cos(sunDeclination))
     if (operand < -1)
-      PolarDay(toLocalDate(jTransit))
+      PolarDay
     else if (operand > 1)
-      PolarNight(toLocalDate(jTransit))
+      PolarNight
     else {
       val hourAngle = Math.acos(operand).toDegrees / 360
 
@@ -116,9 +116,9 @@ object SunriseSunset {
       case Day(sunrise,sunset) =>
         println(sunrise) // 2017-05-22T05:39:09+02:00[Europe/Amsterdam]
         println(sunset)  // 2017-05-22T21:37:34+02:00[Europe/Amsterdam]
-      case PolarDay(_) =>
+      case PolarDay =>
         println("Polar day")
-      case PolarNight(_) =>
+      case PolarNight =>
         println("Polar night")
     }
   }

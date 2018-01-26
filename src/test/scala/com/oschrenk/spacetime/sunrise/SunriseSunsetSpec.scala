@@ -30,7 +30,7 @@ class SunriseSunsetSpec extends FlatSpec with Matchers {
     val date = LocalDate.of(2017, 5, 22)
     val zoneId = ZoneId.of("Asia/Krasnoyarsk")
     val polar = SunriseSunset.of(lat, lon, date, zoneId)
-    polar shouldBe PolarDay(date)
+    polar shouldBe PolarDay
   }
 
   it should "always be down in Kresty in winter" in {
@@ -39,7 +39,7 @@ class SunriseSunsetSpec extends FlatSpec with Matchers {
     val date = LocalDate.of(2017, 11, 22)
     val zoneId = ZoneId.of("Asia/Krasnoyarsk")
     val polar = SunriseSunset.of(lat, lon, date, zoneId)
-    polar shouldBe PolarNight(date)
+    polar shouldBe PolarNight
   }
 
   "A sunset" should "happen late in Amsterdam" in {
