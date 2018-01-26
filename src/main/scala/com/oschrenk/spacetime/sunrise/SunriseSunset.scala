@@ -55,11 +55,6 @@ object SunriseSunset {
     toZoneDateTime(day, time, zoneId)
   }
 
-  private def toLocalDate(julianDay: BigDecimal): LocalDate = {
-    val days = Math.floor(julianDay.toDouble).toInt
-    LocalDate.from(JulianDayFormatter.parse(days.toString))
-  }
-
   private def toZoneDateTime(day: LocalDate, time: LocalTime, zoneId: ZoneId): ZonedDateTime = {
     val unzonedTime = day.atTime(time)
     val offset = zoneId.getRules.getOffset(unzonedTime)
