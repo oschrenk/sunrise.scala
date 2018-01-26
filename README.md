@@ -12,7 +12,7 @@ Since places within the polar circles might experience [Midnight Sun](https://en
 
 ```
 resolvers += Resolver.bintrayRepo("oschrenk", "maven")
-libraryDependencies += "com.oschrenk.spacetime" %% "sunrise-scala" % "0.3.0"
+libraryDependencies += "com.oschrenk.spacetime" %% "sunrise-scala" % "0.4.0-SNAPSHOT"
 ```
 
 **Your application**
@@ -27,13 +27,14 @@ val zoneId: ZoneId = ZoneId.of("Europe/Amsterdam")
 val date: LocalDate = LocalDate.of(2017, 5, 22)
 
 SunriseSunset.of(latitude, longitude, date, zoneId) match {
-  case Right((sunrise,sunset)) =>
+  case Day(sunrise,sunset) =>
     println(sunrise) // 2017-05-22T05:39:09+02:00[Europe/Amsterdam]
     println(sunset)  // 2017-05-22T21:37:34+02:00[Europe/Amsterdam]
-  case Left(PolarDay(_)) =>
+  case PolarDay(_) =>
     println("Polar day")
-  case Left(PolarNight(_)) =>
+  case PolarNight(_) =>
     println("Polar night")
+}
 ```
 
 ## Publish
