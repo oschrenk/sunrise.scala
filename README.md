@@ -12,7 +12,7 @@ Since places within the polar circles might experience [Midnight Sun](https://en
 
 ```
 resolvers += Resolver.bintrayRepo("oschrenk", "maven")
-libraryDependencies += "com.oschrenk.spacetime" %% "sunrise-scala" % "0.4.0-SNAPSHOT"
+libraryDependencies += "com.oschrenk.spacetime" %% "sunrise-scala" % "0.5.1"
 ```
 
 **Your application**
