@@ -2,7 +2,7 @@ name := "sunrise.scala"
 
 organization := "com.oschrenk.spacetime"
 
-version := "0.5.0"
+version := "0.5.1"
 
 scalaVersion := "2.12.4"
 
