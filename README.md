@@ -30,9 +30,9 @@ SunriseSunset.of(latitude, longitude, date, zoneId) match {
   case Day(sunrise,sunset) =>
     println(sunrise) // 2017-05-22T05:39:09+02:00[Europe/Amsterdam]
     println(sunset)  // 2017-05-22T21:37:34+02:00[Europe/Amsterdam]
-  case PolarDay(_) =>
+  case PolarDay =>
     println("Polar day")
-  case PolarNight(_) =>
+  case PolarNight =>
     println("Polar night")
 }
 ```
