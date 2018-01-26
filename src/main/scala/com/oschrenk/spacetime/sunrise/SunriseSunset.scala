@@ -100,21 +100,4 @@ object SunriseSunset {
     }
   }
 
-  def main(args: Array[String]): Unit = {
-    // Amsterdam
-    val latitude = 52.366667
-    val longitude = 4.9
-    val zoneId: ZoneId = ZoneId.of("Europe/Amsterdam")
-    val date: LocalDate = LocalDate.of(2017, 5, 22)
-
-    SunriseSunset.of(latitude, longitude, date, zoneId) match {
-      case Day(sunrise,sunset) =>
-        println(sunrise) // 2017-05-22T05:39:09+02:00[Europe/Amsterdam]
-        println(sunset)  // 2017-05-22T21:37:34+02:00[Europe/Amsterdam]
-      case PolarDay =>
-        println("Polar day")
-      case PolarNight =>
-        println("Polar night")
-    }
-  }
 }
